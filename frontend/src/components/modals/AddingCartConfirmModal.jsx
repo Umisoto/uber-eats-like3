@@ -36,7 +36,6 @@ const PriceMessage=styled.p`
   font-size: 1.5vw;
   display: inline-block;
   margin:0;
-  /* float: right; */
 `
 
 export const AddingCartConfirmModal = ({
