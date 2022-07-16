@@ -1,25 +1,32 @@
-# README
+# Uber Eats Like App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+UberEats(Web版)を模した仮想のフード注文アプリです。   
+フロントエンドはReact、サーバーサイドはRuby on Rails(API mode)を使用しています。
 
-Things you may want to cover:
+## `使用技術`
 
-* Ruby version
+* react: 17.0.2 (create-react-app)
+* react-router-dom: 6.2.2
+* styled-components: 5.3.3
+* material-ui: 4.12.3
+* axios: 0.26.1
+* rails: 6.0.4
 
-* System dependencies
+## `URL`
 
-* Configuration
 
-* Database creation
+## `アプリの使い方`
+1.ホーム画面  
+任意のレストランを選択します。  
+2.フード一覧画面  
+ホームで選択したレストランに紐づくフードが表示されます。任意のフードを選択すると、注文数を決めた後にカートに追加できます。  
+3.注文画面  
+カートに追加したフードの合計数、レストラン名、合計金額等が表示され、注文を確定します。その後、注文された商品はカートから削除されます。  
 
-* Database initialization
+-機能-  
+カートへは複数のフードを追加することができます。  
+ただし、異なるレストランのフードをカートに追加することはできません。そのため、カートの商品を入れ替えるためのモーダルが表示されます。この場合、事前にカートへ入れていたフード(例：レストラン1のフード1)は削除され、新しいフード(例：レストラン2のフード1)のみがカートに追加されます。
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# Uber-eats-like-model-3
+## `アプリ作成の意図`  
+これまでフロントエンドのみを経験してきたので、フルスタックエンジニアを目指すために作成しました。
