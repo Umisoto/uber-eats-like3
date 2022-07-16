@@ -3,6 +3,9 @@
 UberEats(Web版)を模した仮想のフード注文アプリです。   
 フロントエンドはReact、サーバーサイドはRuby on Rails(API mode)を使用しています。
 
+[Uber-eats-like-app.webm](https://user-images.githubusercontent.com/85279065/179343139-ff1d3391-125e-4a18-86f3-767f36518080.webm)
+
+
 ## `使用技術`
 
 * react: 17.0.2 (create-react-app)
