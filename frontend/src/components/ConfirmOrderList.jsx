@@ -36,8 +36,8 @@ export const ConfirmOrderList = ({
   onClickConfirmOrder,
   buttonMessage
 }) => {
+  
   return (
-    <>
       <ItemWrapper>
         <ItemRow>
           <Link
@@ -68,10 +68,9 @@ export const ConfirmOrderList = ({
           <ItemDescription>合計</ItemDescription>
           <ItemDescription>¥{amount + shipping}</ItemDescription>
         </ItemRow>
-        <ConfirmButton onClick={() => onClickConfirmOrder()}>
+        <ConfirmButton onClick={onClickConfirmOrder}>
           {buttonMessage}
         </ConfirmButton>
       </ItemWrapper>
-    </>
   );
 };

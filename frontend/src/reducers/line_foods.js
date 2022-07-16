@@ -34,7 +34,6 @@ export const lineFoodsReducer = (state, action) => {
     case lineFoodsActionTypes.POST_SUCCESS:
       return {
         ...state,
-        fetchState: REQUEST_STATE.INITIAL,
         postState: REQUEST_STATE.OK
       };
     default:

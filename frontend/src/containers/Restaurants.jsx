@@ -14,7 +14,7 @@ import {
 import { fetchRestaurants } from "../apis/restaurants";
 
 // components
-import {HeaderComponent} from "../components/Header";
+import { HeaderLayout } from "../components/HeaderLayout";
 
 // images
 import MainCoverImage from "../images/main-cover-image.png";
@@ -30,10 +30,13 @@ const MainImageCenter = styled.div`
   text-align: center;
 `;
 const MainImageWrapper = styled.img`
+  width: 100vw;
+  max-width: 1200px;
   height: 50vw;
-  margin: 1vw;
+  max-height: 600px;
 `;
 const RestaurantsWrapper = styled.div`
+  height: 45vw;
   display: flex;
   justify-content: space-around;
 `;
@@ -52,10 +55,6 @@ const RestaurantInfo = styled.p`
   font-size: 2vw;
   margin: 0.8vw 0;
 `;
-const SkeletonStyled = styled(Skeleton)`
-  width: 30vw;
-  height: 40vw;
-`;
 
 export const Restaurants = () => {
   const [state, dispatch] = useReducer(restaurantsReducer, initialState);
@@ -73,7 +72,7 @@ export const Restaurants = () => {
 
   return (
     <>
-      <HeaderComponent />
+      <HeaderLayout />
       <MainWrapper>
         <MainImageCenter>
           <MainImageWrapper src={MainCoverImage} alt="main cover image" />
@@ -81,9 +80,9 @@ export const Restaurants = () => {
         <RestaurantsWrapper>
           {state.fetchState === REQUEST_STATE.LOADING ? (
             <>
-              <SkeletonStyled variant="rect" />
-              <SkeletonStyled variant="rect" />
-              <SkeletonStyled variant="rect" />
+              <Skeleton variant="rect" width={"30vw"} height={"33vw"} />
+              <Skeleton variant="rect" width={"30vw"} height={"33vw"} />
+              <Skeleton variant="rect" width={"30vw"} height={"33vw"} />
             </>
           ) : (
             state.restaurantsList.map((res, index) => (

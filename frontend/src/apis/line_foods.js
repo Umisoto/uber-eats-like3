@@ -3,7 +3,7 @@ import { lineFoods, lineFoodsReplace } from "../urls/index";
 
 export const postLineFoods = (foodId, count) => {
   return axios
-    .post(lineFoods, { food_id: foodId, count: count })
+    .post(lineFoods, { food_id: foodId, count })
     .then(res => {
       return res;
     })
@@ -16,7 +16,7 @@ export const postLineFoods = (foodId, count) => {
 
 export const putLineFoods = (foodId, count) => {
   return axios
-    .put(lineFoodsReplace, { food_id: foodId, count: count })
+    .put(lineFoodsReplace, { food_id: foodId, count })
     .then(res => {
       return res.data;
     })

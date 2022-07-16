@@ -6,18 +6,24 @@ import Logo from "../images/logo.png";
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 const LogoWrapper = styled.img`
   margin: 0 1vw;
-  height: 12vw;
+  width: 14vw;
+  max-width: 165px;
+  height: 14vw;
+  max-height: 165px;
 `;
 
-export const HeaderComponent = () => {
+export const HeaderLayout = ({children}) => {
+  // React.memoだとchildrenなどにJSXの要素が入るとメモできないため親コンポーネントでuseMemo
   return (
     <Header>
       <Link to="/restaurants">
         <LogoWrapper src={Logo} alt="logo" />
       </Link>
+      {children}
     </Header>
   );
 };

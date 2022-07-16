@@ -20,22 +20,21 @@ const FoodName = styled.p`
   font-size: 2vw;
   padding: 0;
 `;
-const ImageArraingement = styled.div`
+const ImageArrangement = styled.div`
   text-align: center;
 `;
 const FoodDescription = styled.p`
   font-size: 1.5vw;
   padding: 0 1vw;
 `;
-const ButtonMessage=styled.p`
+const ButtonMessage=styled.span`
   font-size: 1.5vw;
-  margin:0 10vw;
-  display: inline-block;
+  margin:0vw;
 `
-const PriceMessage=styled.p`
+const PriceMessage=styled.span`
   font-size: 1.5vw;
-  display: inline-block;
-  margin:0;
+  margin-right: 1vw;
+  float: right;
 `
 
 export const AddingCartConfirmModal = ({
@@ -44,17 +43,18 @@ export const AddingCartConfirmModal = ({
   name,
   description,
   count,
-  price,
+  buttonMessage,
+  amount,
   onClickIncreaseCount,
   onClickDecreaseCount,
   onClickConfirmButton
 }) => {
+
   return (
-    <>
-      <Dialog open={isOpen} onClose={onClose}>
-        <ImageArraingement>
+      <Dialog open={isOpen} onClose={onClose} maxWidth={"xl"} >
+        <ImageArrangement>
           <OrderHeader src={OrderHeaderLogo} />
-        </ImageArraingement>
+        </ImageArrangement>
         <DialogTitle>
           <FoodName>{name}</FoodName>
         </DialogTitle>
@@ -64,23 +64,24 @@ export const AddingCartConfirmModal = ({
         <DialogActions>
           <RoundButton
             disabled={count <= 1}
-            onClick={() => onClickDecreaseCount()}
+            onClick={onClickDecreaseCount}
           >
             -
           </RoundButton>
           <FoodDescription>{count}</FoodDescription>
           <RoundButton
             disabled={count >= 9}
-            onClick={() => onClickIncreaseCount()}
+            onClick={onClickIncreaseCount}
           >
             +
           </RoundButton>
-          <ConfirmButton onClick={() => onClickConfirmButton()}>
-            <ButtonMessage>Add cart {count} items</ButtonMessage>
-            <PriceMessage>¥{count*price}</PriceMessage>
+          <ConfirmButton onClick={onClickConfirmButton}>
+            <ButtonMessage>
+            {buttonMessage}
+            </ButtonMessage>
+            <PriceMessage>{amount}</PriceMessage>
           </ConfirmButton>
         </DialogActions>
       </Dialog>
-    </>
   );
 };

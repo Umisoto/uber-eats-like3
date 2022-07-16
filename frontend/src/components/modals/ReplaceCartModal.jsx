@@ -23,7 +23,7 @@ export const ReplaceCartModal=({isOpen, onClose, newRestaurant, existingRestaura
                 <ReplaceMessage>新規の注文を開始して、「{existingRestaurant}」の商品を追加してください。</ReplaceMessage>
             </DialogContent>
             <DialogActions>
-                <ConfirmButton onClose={()=>onClose()} onClick={()=>onClickReplace()} >Replace a Cart</ConfirmButton>
+                <ConfirmButton onClose={()=>onClose()} onClick={()=>onClickReplace()} >商品を入れ替える</ConfirmButton>
             </DialogActions>
         </Dialog>
     )

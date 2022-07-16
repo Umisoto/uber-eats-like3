@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useMemo } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -23,102 +23,77 @@ import { ReplaceCartModal } from "../components/modals/ReplaceCartModal";
 import { REQUEST_STATE } from "../api_constants";
 
 // images
-import Logo from "../images/logo.png";
-import FoodLogo from "../images/food-image.jpg";
+import { HeaderLayout } from "../components/HeaderLayout";
+import { FoodCard } from "../components/FoodCard";
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const LogoWrapper = styled.img`
-  margin: 0 1vw;
-  height: 12vw;
-`;
 const ColoredBagIcon = styled(LocalMallIcon)`
-  margin: 5vw 2vw;
   color: green;
+  margin-right: 1vw;
 `;
 const FoodsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
 `;
-const FoodContainer = styled.div`
-  display: flex;
-  width: 32vw;
-  height: 15vw;
-  margin: 1.5vw 0;
-  border: 0.1vw #c0c0c0 solid;
-  cursor: pointer;
-`;
-const FoodInfoContainer = styled.div`
-  width: 14vw;
-  height: 15vw;
-`;
-const FoodDescription = styled.p`
-  font-size: 1.5vw;
-  margin: 1vw 0;
-`;
-const FoodImageContainer = styled.img`
-  width: 18vw;
-  height: 15vw;
-`;
 const StyledSkeleton = styled(Skeleton)`
-  width: 32vw;
-  height: 15vw;
+  margin: 1.6vw 0;
 `;
 
 export const Foods = () => {
   const { restaurantsId } = useParams();
   const navigate = useNavigate();
 
-  const initModalState = {
-    isOpenAddingCartModal: false,
-    isOpenReplaceCartModal: false,
-    selectedFood: [],
-    count: 1,
+  const initRestaurant={
     newRestaurant: null,
     existingRestaurant: null
-  };
-  const [modalState, setModalState] = useState(initModalState);
-
+  }
+  const [selectedFood, setSelectedFood]=useState([])
+  const [count, setCount]=useState(1);
+  const [amount, setAmount]=useState(500);
+  const [isOpenAddingCartModal, setIsOpenAddingCartModal]=useState(false)
+  const [isOpenReplaceCartModal, setIsOpenReplaceCartModal]=useState(false)
+  const [restaurant, setRestaurant]=useState(initRestaurant)
   const [state, dispatch] = useReducer(foodsReducer, initialState);
 
   const onClickModalOpen = food => {
-    setModalState({
-      ...modalState,
-      isOpenAddingCartModal: true,
-      selectedFood: food
-    });
+    setIsOpenAddingCartModal(true)
+    setSelectedFood(food)
+    setCount(1)
+    setAmount(500)
   };
 
-  const onCloseAddingCartModal = () => {
-    setModalState({ initialState });
-  };
+  const onClickIncreaseCount = () => {
+    setCount(count+1)
+    setAmount((count+1)*selectedFood.price)
+  }
 
-  const ConfirmButtonLogic = () => {
-    postLineFoods(modalState.selectedFood.id, modalState.count)
+  const onClickDecreaseCount = () => {
+    setCount(count-1)
+    setAmount((count-1)*selectedFood.price)
+  }
+
+  const onClickConfirmButton = () => {
+    postLineFoods(selectedFood.id, count)
       .then(res => {
         res.status === 201
           ? navigate("/orders")
-          : setModalState({
-              ...modalState,
-              isOpenAddingCartModal: false,
-              isOpenReplaceCartModal: true,
+          : 
+            setIsOpenAddingCartModal(false)
+            setIsOpenReplaceCartModal(true)
+            setRestaurant({
               newRestaurant: res.data.new_restaurant,
               existingRestaurant: res.data.existing_restaurant
-            });
+            })
       })
-      .catch(e => console.error(e));
   };
 
-  const onClickReplace=()=>{
-      putLineFoods(modalState.selectedFood.id, modalState.count)
+  const onClickReplace = () => {
+      putLineFoods(selectedFood.id, count)
       .then(()=>{
         navigate("/orders")
       })
-      .catch(e=>console.error(e))
-  }
+      .catch(e => console.error(e));
+  };
 
   useEffect(() => {
     dispatch({ type: foodsActionTypes.FETCHING });
@@ -132,66 +107,51 @@ export const Foods = () => {
       .catch(e => console.error(e));
   }, []);
 
+  const children=useMemo(()=>(
+    <HeaderLayout >
+      <Link to="/orders">
+        <ColoredBagIcon />
+      </Link>
+    </HeaderLayout>
+  ), [])
+
   return (
     <>
-      <Header>
-        <Link to="/restaurants">
-          <LogoWrapper src={Logo} alt="logo" />
-        </Link>
-        <Link to="/orders">
-          <ColoredBagIcon />
-        </Link>
-      </Header>
+      {children}
       <FoodsWrapper>
         {state.fetchState === REQUEST_STATE.LOADING
           ? [...Array(12).keys()].map(index => (
-              <StyledSkeleton variant="rect" key={index} />
+              <StyledSkeleton variant="rect" width={"32vw"} height={"15vw"} key={index} />
             ))
           : state.foodsList.map((food, index) => (
-              <FoodContainer key={index} onClick={() => onClickModalOpen(food)}>
-                <FoodInfoContainer>
-                  <FoodDescription>{food.name}</FoodDescription>
-                  <FoodDescription>{food.description}</FoodDescription>
-                  <FoodDescription>¥{food.price}</FoodDescription>
-                </FoodInfoContainer>
-                <FoodImageContainer src={FoodLogo} />
-              </FoodContainer>
+              <div key={index} >
+                <FoodCard name={food.name} description={food.description} price={food.price} onClickModalOpen={()=>onClickModalOpen(food)} />
+              </div>
             ))}
       </FoodsWrapper>
 
-      {modalState.isOpenAddingCartModal === true && (
-        <>
+      {isOpenAddingCartModal === true && (
           <AddingCartConfirmModal
-            isOpen={modalState.isOpenAddingCartModal}
-            onClose={() => onCloseAddingCartModal()}
-            name={modalState.selectedFood.name}
-            description={modalState.selectedFood.description}
-            count={modalState.count}
-            price={modalState.selectedFood.price}
-            onClickIncreaseCount={() =>
-              setModalState({
-                ...modalState,
-                count: modalState.count + 1
-              })
-            }
-            onClickDecreaseCount={() =>
-              setModalState({
-                ...modalState,
-                count: modalState.count - 1
-              })
-            }
-            onClickConfirmButton={() => ConfirmButtonLogic()}
+            isOpen={isOpenAddingCartModal}
+            onClose={()=>setIsOpenAddingCartModal(false)}
+            name={selectedFood.name}
+            description={selectedFood.description}
+            count={count}
+            buttonMessage={`${count}点をカートに追加する`}
+            amount={`¥${amount}`}
+            onClickIncreaseCount={onClickIncreaseCount}
+            onClickDecreaseCount={onClickDecreaseCount}
+            onClickConfirmButton={onClickConfirmButton}
           />
-        </>
       )}
 
-      {modalState.isOpenReplaceCartModal && (
+      {isOpenReplaceCartModal && (
         <ReplaceCartModal
-          isOpen={modalState.isOpenReplaceCartModal}
-          onClose={() => setModalState(initialState)}
-          newRestaurant={modalState.newRestaurant}
-          existingRestaurant={modalState.existingRestaurant}
-          onClickReplace={()=>onClickReplace()}
+          isOpen={isOpenReplaceCartModal}
+          onClose={()=>setIsOpenReplaceCartModal(false)}
+          newRestaurant={restaurant.newRestaurant}
+          existingRestaurant={restaurant.existingRestaurant}
+          onClickReplace={onClickReplace}
         />
       )}
     </>

@@ -16,9 +16,9 @@ import { postOrder } from "../apis/orders";
 // components
 import { REQUEST_STATE } from "../api_constants";
 import { ConfirmOrderList } from "../components/ConfirmOrderList";
-import { HeaderComponent } from "../components/Header";
+import { HeaderLayout } from "../components/HeaderLayout";
 
-const CenteredCirclarProgress = styled.div`
+const CenteredCircularProgress = styled.div`
   text-align: center;
 `;
 const Message = styled.p`
@@ -28,12 +28,6 @@ const Message = styled.p`
 
 export const Orders = () => {
   const [state, dispatch] = useReducer(lineFoodsReducer, initialState);
-  useEffect(() => {
-    dispatch({ type: lineFoodsActionTypes.FETCHING });
-    fetchLineFoods().then(data => {
-      dispatch({ type: lineFoodsActionTypes.FETCH_SUCCESS, payload: data });
-    });
-  }, []);
 
   const onClickConfirmOrder = () => {
     dispatch({ type: lineFoodsActionTypes.POSTING });
@@ -45,24 +39,31 @@ export const Orders = () => {
       .catch(e => console.error(e));
   };
 
+  useEffect(() => {
+    dispatch({ type: lineFoodsActionTypes.FETCHING });
+    fetchLineFoods().then(data => {
+      dispatch({ type: lineFoodsActionTypes.FETCH_SUCCESS, payload: data });
+    });
+  }, []);
+
   const buttonMessageLogic = () => {
     switch (state.postState) {
       case REQUEST_STATE.LOADING:
-        return "Ordering...";
+        return "注文中...";
       case REQUEST_STATE.OK:
         return "Thank you!";
       default:
-        return "Confirm Order";
+        return "注文を確定する";
     }
   };
 
   return (
     <>
-      <HeaderComponent />
+      <HeaderLayout />
       {state.fetchState === REQUEST_STATE.LOADING && (
-        <CenteredCirclarProgress>
+        <CenteredCircularProgress>
           <CircularProgress />
-        </CenteredCirclarProgress>
+        </CenteredCircularProgress>
       )}
       {state.fetchState === REQUEST_STATE.OK &&
         (state.lineFoodsList ? (
@@ -73,11 +74,11 @@ export const Orders = () => {
             count={state.lineFoodsList.count}
             amount={state.lineFoodsList.total_amount}
             shipping={state.lineFoodsList.restaurant.shipping}
-            onClickConfirmOrder={() => onClickConfirmOrder()}
+            onClickConfirmOrder={onClickConfirmOrder}
             buttonMessage={buttonMessageLogic()}
           />
         ) : (
-          <Message>There is no items in your cart.</Message>
+          <Message>カートに商品が入っていません。</Message>
         ))}
     </>
   );
