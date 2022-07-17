@@ -10,4 +10,9 @@ Rails.application.routes.draw do
     # 'line_foods/replace'というURLに対してPUTリクエストがきたら、line_foods_controller.rbのreplaceメソッドを呼ぶ
     resources :orders, only: %i[create]
   end
+
+  get '*path', to: "application#fallback_index_html", constraints: ->(request) do
+    !request.xhr? && request.format.html?
+  end
+  
 end

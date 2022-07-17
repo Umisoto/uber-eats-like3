@@ -64,6 +64,7 @@ GEM
     crass (1.0.6)
     erubi (1.10.0)
     ffi (1.15.5)
+    foreman (0.87.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -84,6 +85,7 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
+    pg (1.4.1)
     puma (4.3.11)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -149,7 +151,9 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
+  foreman
   listen (~> 3.2)
+  pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.4, >= 6.0.4.6)

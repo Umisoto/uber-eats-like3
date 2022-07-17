@@ -1,0 +1,25 @@
+{
+  "name": "uber-eats-like-practice3",
+  "version": "1.0.0",
+  "description": "You can order foods what you want to eat through this app",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cd ..",
+    "deploy": "cp -a frontend/build/. public/",
+    "heroku-postbuild": "npm run build && npm run deploy && echo 'Client built!'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shota-mancity/Uber-eats-like-model-3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shota-mancity/Uber-eats-like-model-3/issues"
+  },
+  "homepage": "https://github.com/Shota-mancity/Uber-eats-like-model-3#readme"
+}
