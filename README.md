@@ -17,7 +17,7 @@ UberEats(Web版)を模した仮想のフード注文アプリです。
 
 ## `URL`
 
-https://uber-eats-like-app.herokuapp.com/restaurants
+[Uber Eats Like App](https://uber-eats-like-app.herokuapp.com/restaurants)
 
 ## `アプリの使い方`
 1.ホーム画面  
