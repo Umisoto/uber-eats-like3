@@ -1,5 +1,4 @@
 class Order < ApplicationRecord
-    has_one :food
     has_many :line_foods
 
     validates :total_amount, numericality: {greater_than: 0}
